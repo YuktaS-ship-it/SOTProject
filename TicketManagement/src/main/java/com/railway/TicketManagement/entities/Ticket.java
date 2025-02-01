@@ -1,5 +1,6 @@
 package com.railway.TicketManagement.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.*;
@@ -14,10 +15,10 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ticket_id")
-    private Integer ticketId;
+    private Long ticketId;
 
     @ManyToOne
-    @JoinColumn(name = "booking_id")
+    @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
     @Column(name = "seat_number")
@@ -35,5 +36,5 @@ public class Ticket {
     private Station endStation;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 }

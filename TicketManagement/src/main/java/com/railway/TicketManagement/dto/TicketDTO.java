@@ -1,6 +1,7 @@
 package com.railway.TicketManagement.dto;
 
 import lombok.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -10,10 +11,7 @@ import lombok.*;
 public class TicketDTO {
     private Long ticketID;
     private Long bookingID;
-    private String seatNumber;
+    private Integer seatNumber;
     private Long startStationId;
     private Long endStationId;
-    private Boolean ticketConfirmation;
-
-
 }

@@ -38,10 +38,10 @@ public class Payment {
     private PaymentStatus paymentStatus;
 
     public enum PaymentMethod {
-        Cash, Card
+        CASH, CARD
     }
 
     public enum PaymentStatus {
-        failed, success, pending
+        FAILED, SUCCESS, PENDING
     }
 }

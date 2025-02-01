@@ -1,5 +1,7 @@
 package com.railway.TicketManagement.service;
 
+import com.railway.TicketManagement.dto.TicketDTO;
+import com.railway.TicketManagement.repository.TicketDAO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +26,16 @@ public class BookingServiceImpl implements BookingService {
     private BookingDAO bookingDao;
 
     @Autowired
+    private TicketDAO ticketDao;
+
+    @Autowired
     private PaymentDAO paymentDao;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    @Override
+
+    /*@Override
     public BookingDTO addNewBooking(BookingDTO bookingDTO) {
         Booking bookingEntity = modelMapper.map(bookingDTO, Booking.class);
 
@@ -64,5 +70,47 @@ public class BookingServiceImpl implements BookingService {
         return bookings.stream()
                 .map(booking -> modelMapper.map(booking, BookingDTO.class))
                 .collect(Collectors.toList());
+    }
+}*/
+
+    @Override
+    public BookingDTO addNewBooking(BookingDTO bookingDTO) {
+        Booking bookingEntity = modelMapper.map(bookingDTO, Booking.class);
+        bookingEntity.setTickets(null);
+        Booking savedBooking = bookingDao.save(bookingEntity);
+
+        for (int i = 1; i <= bookingDTO.getNumOfTicketsBooked(); i++) {
+            Ticket ticket = Ticket.builder()
+                    .booking(savedBooking)
+                    .seatNumber(i)
+                    .price(bookingDTO.getTotalAmount() / bookingDTO.getNumOfTicketsBooked())
+                    .startStation(null) // Assign dynamically
+                    .endStation(null) // Assign dynamically
+                    .build();
+            ticketDao.save(ticket);
+        }
+
+        Payment payment = Payment.builder()
+                .booking(savedBooking)
+                .date(new Date())
+                .amount(bookingDTO.getTotalAmount())
+                .paymentMethod(Payment.PaymentMethod.valueOf(bookingDTO.getPaymentMethod()))
+                .paymentStatus(Payment.PaymentStatus.valueOf(bookingDTO.getPaymentStatus()))
+                .build();
+        paymentDao.save(payment);
+
+        return modelMapper.map(savedBooking, BookingDTO.class);
+    }
+
+    @Override
+    public List<BookingDTO> showAllBookings() {
+        List<Booking> bookings = bookingDao.findAll();
+        return bookings.stream().map(booking -> {
+            BookingDTO bookingDTO = modelMapper.map(booking, BookingDTO.class);
+            bookingDTO.setTickets(ticketDao.findByBooking_BookingId(Long.valueOf(booking.getBookingId()))
+                    .stream().map(ticket -> modelMapper.map(ticket, TicketDTO.class))
+                    .collect(Collectors.toSet()));
+            return bookingDTO;
+        }).collect(Collectors.toList());
     }
 }

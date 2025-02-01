@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
-    private Integer bookingId;
+    private Long bookingId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -34,15 +35,26 @@ public class Booking {
     private Schedule schedule;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
     public enum Status {
-        Booked, cancelled, confirmed
+        BOOKED, CANCELLED, CONFIRMED
     }
+
+    @Column(name = "total_amount", nullable = false)
+    private Double totalAmount;  // Ensure this field is included in insert
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method", nullable = false)
+    private Payment.PaymentMethod paymentMethod;  // Ensure this is included
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status", nullable = false)
+    private Payment.PaymentStatus paymentStatus;  // Ensure this is included
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
