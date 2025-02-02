@@ -38,4 +38,51 @@ public class Station {
     @JsonIgnore
     private List<Ticket> endTickets;
 
+    public int getStationId() {
+        return stationId;
+    }
+
+    public void setStationId(Integer stationId) {
+        this.stationId = stationId;
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
+    }
+
+    public List<Ticket> getStartTickets() {
+        return startTickets;
+    }
+
+    public void setStartTickets(List<Ticket> startTickets) {
+        this.startTickets = startTickets;
+    }
+
+    public List<Ticket> getEndTickets() {
+        return endTickets;
+    }
+
+    public void setEndTickets(List<Ticket> endTickets) {
+        this.endTickets = endTickets;
+    }
 }
