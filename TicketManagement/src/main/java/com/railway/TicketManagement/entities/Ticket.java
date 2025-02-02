@@ -36,4 +36,60 @@ public class Ticket {
 
     @Column(name = "date")
     private Date date;
+
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+
+    public Integer getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(Integer seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Station getStartStation() {
+        return startStation;
+    }
+
+    public void setStartStation(Station startStation) {
+        this.startStation = startStation;
+    }
+
+    public Station getEndStation() {
+        return endStation;
+    }
+
+    public void setEndStation(Station endStation) {
+        this.endStation = endStation;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
