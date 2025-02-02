@@ -38,5 +38,6 @@ public interface BookingDAO extends JpaRepository<Booking, Long> {
             """, nativeQuery = true)
     List<Object[]> findAllBookingsRaw();
 
+    List<Booking> findByUser_UserId(Integer userId);
 }
 

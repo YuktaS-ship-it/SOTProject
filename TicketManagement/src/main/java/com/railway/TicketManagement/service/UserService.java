@@ -1,6 +1,9 @@
 package com.railway.TicketManagement.service;
 
 import com.railway.TicketManagement.dto.UserDTO;
+import com.railway.TicketManagement.entities.Booking;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -9,5 +12,7 @@ public interface UserService {
     UserDTO login(String email, String password);
 
     UserDTO getUserById(Long userId);
+
+    List<Booking> getBookingsByUserId(Integer userId);
 }
 

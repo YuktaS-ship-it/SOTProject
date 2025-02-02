@@ -1,11 +1,14 @@
 package com.railway.TicketManagement.service;
 import com.railway.TicketManagement.dto.UserDTO;
+import com.railway.TicketManagement.entities.Booking;
 import com.railway.TicketManagement.entities.User;
+import com.railway.TicketManagement.repository.BookingDAO;
 import com.railway.TicketManagement.repository.UserRepository;
 import com.railway.TicketManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +17,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BookingDAO bookingRepository;
     /**
      * Registers a new user if the email is not already taken.
      */
@@ -57,6 +62,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         return mapEntityToDto(user);
+    }
+
+    @Override
+    public List<Booking> getBookingsByUserId(Integer userId) {
+        return  bookingRepository.findByUser_UserId(userId);
     }
 
     // Utility method to map DTO to Entity

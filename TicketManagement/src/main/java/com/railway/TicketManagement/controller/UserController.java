@@ -1,10 +1,13 @@
 package com.railway.TicketManagement.controller;
 import com.railway.TicketManagement.dto.LoginDTO;
 import com.railway.TicketManagement.dto.UserDTO;
+import com.railway.TicketManagement.entities.Booking;
 import com.railway.TicketManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -45,6 +48,11 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
         UserDTO userDTO = userService.getUserById(userId);
         return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping("/{id}/myBookings")
+    public List<Booking> getUserBookings(@PathVariable Integer id) {
+        return userService.getBookingsByUserId(id);
     }
 }
 
