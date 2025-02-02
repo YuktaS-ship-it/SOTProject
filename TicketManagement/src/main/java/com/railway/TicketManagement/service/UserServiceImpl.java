@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     // Utility method to map DTO to Entity
     private User mapDtoToEntity(UserDTO userDTO) {
         return User.builder()
-                .userId(userDTO.getUserId())
+                .userId(Math.toIntExact(userDTO.getUserId()))
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
     // Utility method to map Entity to DTO
     private UserDTO mapEntityToDto(User user) {
         return UserDTO.builder()
-                .userId(user.getUserId())
+                .userId(Long.valueOf(user.getUserId()))
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())

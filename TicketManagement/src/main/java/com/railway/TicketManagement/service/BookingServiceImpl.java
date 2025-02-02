@@ -48,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
 
         return results.stream().map(result -> {
             BookingResponseDTO dto = new BookingResponseDTO();
-            dto.setUserId(getLongValue(result[0]));
+            dto.setUserId((Integer) result[0]);
             dto.setTrainNumber((String) result[1]);
             dto.setTrainName((String) result[2]);
             dto.setDateOfJourney(result[3] != null ? result[3].toString() : null);
@@ -100,7 +100,7 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setDate(new Date());
 
         // Set User
-        User user = userDao.findById(bookingRequestDTO.getUserId())
+        User user = userDao.findById(Long.valueOf(bookingRequestDTO.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + bookingRequestDTO.getUserId()));
         bookingEntity.setUser(user);
 

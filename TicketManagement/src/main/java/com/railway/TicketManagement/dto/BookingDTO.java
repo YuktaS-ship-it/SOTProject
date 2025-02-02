@@ -11,8 +11,8 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 public class BookingDTO {
-    private Long bookingID;
-    private Long userId;
+    private Integer bookingID;
+    private Integer userId;
     private Long trainId;
     private Long scheduleID;
     private LocalDate dateOfJourney;

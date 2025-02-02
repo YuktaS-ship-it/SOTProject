@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class BookingResponseDTO {
-    private Long userId;
+    private Integer userId;
     private String trainNumber;
     private String trainName;
     private String dateOfJourney;
