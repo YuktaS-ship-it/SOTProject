@@ -17,8 +17,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
-
     // Endpoint to get station summary
     @GetMapping("/stationSummary")
     public List<StationSummaryDTO> getStationSummary() {
