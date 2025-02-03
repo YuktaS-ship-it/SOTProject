@@ -70,21 +70,28 @@ public class UserServiceImpl implements UserService {
     }
 
     // Utility method to map DTO to Entity
+    // Utility method to map DTO to Entity
     private User mapDtoToEntity(UserDTO userDTO) {
-        return User.builder()
-                .userId(Math.toIntExact(userDTO.getUserId()))
+        User.UserBuilder userBuilder = User.builder()
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
                 .contactNumber(userDTO.getContactNumber())
-                .password(userDTO.getPassword())
-                .build();
+                .password(userDTO.getPassword());
+
+        // Only set userId if it is not null
+        if (userDTO.getUserId() != null) {
+            userBuilder.userId(Math.toIntExact(userDTO.getUserId()));
+        }
+
+        return userBuilder.build();
     }
 
     // Utility method to map Entity to DTO
+    // Utility method to map Entity to DTO
     private UserDTO mapEntityToDto(User user) {
         return UserDTO.builder()
-                .userId(Long.valueOf(user.getUserId()))
+                .userId(Long.valueOf(user.getUserId())) // Assuming User's userId is of type Integer
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
