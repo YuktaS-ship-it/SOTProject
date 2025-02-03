@@ -1,5 +1,6 @@
 package com.railway.TicketManagement.service;
 
+import com.railway.TicketManagement.dto.BookingResponseDTO;
 import com.railway.TicketManagement.dto.StationSummaryDTO;
 import com.railway.TicketManagement.dto.TrainSummaryDTO;
 import com.railway.TicketManagement.entities.Booking;
@@ -7,18 +8,23 @@ import com.railway.TicketManagement.entities.Station;
 import com.railway.TicketManagement.entities.Ticket;
 import com.railway.TicketManagement.entities.Trains;
 import com.railway.TicketManagement.repository.AdminRepository;
+import com.railway.TicketManagement.repository.BookingDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private BookingDAO bookingDAO;  // Inject BookingDAO
 
     @Override
     public List<StationSummaryDTO> getStationSummary() {
@@ -44,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
 
             summary.setEarnings(earnings);
             summary.setTotalPassengers(totalPassengers);
-            summary.setDate(new Date());  // You can modify to show actual date of report
+            summary.setDate(new Date());
 
             summaryDTOs.add(summary);
         }
@@ -66,19 +72,40 @@ public class AdminServiceImpl implements AdminService {
             double earnings = 0;
             int totalPassengers = 0;
             for (Booking ticket : train.getBookings()) {
-                //List<Ticket> tickets = ticket.getTickets();
-                for(Ticket tickets : ticket.getTickets())
+                for (Ticket tickets : ticket.getTickets())
                     earnings += tickets.getPrice();
                 totalPassengers++;
             }
 
             summary.setEarnings(earnings);
             summary.setTotalPassengers(totalPassengers);
-            summary.setDate(new Date());  // You can modify to show actual date of report
+            summary.setDate(new Date());
 
             summaryDTOs.add(summary);
         }
 
         return summaryDTOs;
     }
+
+    // New method for booking history
+    @Override
+    public List<BookingResponseDTO> getAllUsersWithBookings() {
+        List<Object[]> rawBookings = bookingDAO.findAllBookingsRaw();
+
+        return rawBookings.stream().map(obj -> new BookingResponseDTO(
+                obj[0] != null ? ((Number) obj[0]).intValue() : null,  // userId (Integer)
+                obj[1] != null ? obj[1].toString() : null,  // trainNumber (String)
+                obj[2] != null ? obj[2].toString() : null,  // trainName (String)
+                obj[3] != null ? obj[3].toString() : null,  // dateOfJourney (String)
+                obj[4] != null ? obj[4].toString() : null,  // sourceStation (String)
+                obj[5] != null ? obj[5].toString() : null,  // departureTimeFromStart (String)
+                obj[6] != null ? obj[6].toString() : null,  // destinationStation (String)
+                obj[7] != null ? obj[7].toString() : null,  // arrivalTimeAtDestination (String)
+                obj[8] != null ? ((Number) obj[8]).intValue() : null,  // numOfTicketsBooked (Integer)
+                obj[9] != null ? ((Number) obj[9]).doubleValue() : null, // totalAmount (Double)
+                obj[10] != null ? obj[10].toString() : null, // paymentMethod (String)
+                obj[11] != null ? obj[11].toString() : null  // paymentStatus (String)
+        )).collect(Collectors.toList());
+    }
+
 }

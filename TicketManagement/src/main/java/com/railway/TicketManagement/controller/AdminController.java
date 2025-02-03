@@ -1,12 +1,11 @@
 package com.railway.TicketManagement.controller;
 
+import com.railway.TicketManagement.dto.BookingResponseDTO;
 import com.railway.TicketManagement.dto.StationSummaryDTO;
 import com.railway.TicketManagement.dto.TrainSummaryDTO;
 import com.railway.TicketManagement.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +26,11 @@ public class AdminController {
     @GetMapping("/trainSummary")
     public List<TrainSummaryDTO> getTrainSummary() {
         return adminService.getTrainSummary();
+    }
+
+    // New API: Get all users with booking history
+    @GetMapping("/users-with-bookings")
+    public List<BookingResponseDTO> getAllUsersWithBookings() {
+        return adminService.getAllUsersWithBookings();
     }
 }
